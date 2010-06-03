@@ -32,3 +32,44 @@ monitoring the tone of forum threads.
   # 'response' works like a Hash
   puts response['Topics']
 
+=== Output Format
+
+In case you need a different format, OpenAmplify supports XML, JSON, RDF, CSV.
+It can also return the result as a fancy HTML page.
+
+  # assuming you use Nokogiri
+  doc = Nokogiri::XML(response.to_xml)
+
+  # or you want a JSON
+  json = JSON.parse(response.to_json)
+
+  # you should really try the pretty formats
+  puts response.to_pretty
+  # or
+  puts response.to_signals
+
+=== Analysis options
+
+By default, OpenAmplify returns a number of 'signals' about your text.
+You can limit the result by setting the 'analysis' option.
+
+The different options and explanations are available at http://community.openamplify.com/blogs/quickstart/pages/overview.aspx
+
+  client = OpenAmplify::Client.new(:api_key => API_KEY, :analysis => 'topics')
+
+  # or you have a client instance already
+  client.analysis = 'topics'
+
+  response = client.analyze_text(text)
+  response['Topics']  # => should be another big Hash of key-value pairs
+  response['Demographics'] # => nil
+
+=== Request URL
+
+In case you are wondering what the request URL looks like:
+
+  response.request_url
+
+If someday, OpenAmplify decides to change their API URL:
+
+  client.base_url = 'http://newurl'
