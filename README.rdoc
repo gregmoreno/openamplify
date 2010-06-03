@@ -57,7 +57,7 @@ The different options and explanations are available at http://community.openamp
 
   client = OpenAmplify::Client.new(:api_key => API_KEY, :analysis => 'topics')
 
-  # or you have a client instance already
+  # or if you have a client instance already
   client.analysis = 'topics'
 
   response = client.analyze_text(text)
