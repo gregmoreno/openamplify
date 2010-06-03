@@ -7,4 +7,28 @@ might include pairing ads with articles, creating rich tag-clouds, or
 monitoring the tone of forum threads.
 
 == Helpful links
-* <b>Overview</b>: http://community.openamplify.com/blogs/quickstart/pages/overview.aspx
+
+* <b>Overview:</b> http://community.openamplify.com/blogs/quickstart/pages/overview.aspx
+
+== Usage
+
+=== Show the result from OpenAmplify as a Hash
+
+  require 'openamplify'
+
+  API_KEY = "register to get a key"
+  client = OpenAmplify::Client.new(:api_key => API_KEY)
+
+  text = "After getting the MX1000 laser mouse and the Z-5500 speakers i fell in love with logitech"
+  response = client.analyze_text(text)
+
+  # List all the keys and values returned by OpenAmplify
+  response.each do |k, v|
+    pp k
+    pp v
+  end
+
+
+  # 'response' works like a Hash
+  puts response['Topics']
+
