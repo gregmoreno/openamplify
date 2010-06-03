@@ -1,0 +1,10 @@
+= OpenAmplify
+
+The OpenAmplify API reads text you supply and returns linguistic data 
+explaining and classifying the content. What you do with that analysis is, 
+in the fine tradition of APIs and mashups, up to you. Some possibilities 
+might include pairing ads with articles, creating rich tag-clouds, or 
+monitoring the tone of forum threads.
+
+== Helpful links
+* <b>Overview</b>: http://community.openamplify.com/blogs/quickstart/pages/overview.aspx
