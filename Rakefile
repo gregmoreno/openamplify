@@ -10,7 +10,7 @@ begin
     gem.email       = "rubyoncloud@gmail.com"
     gem.homepage    = "http://github.com/gregmoreno/openamplify"
     gem.authors     = ["Greg Moreno"]
-    gem.add_dependency 'json'
+    gem.add_dependency "json", "~>1.2"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
