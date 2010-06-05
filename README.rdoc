@@ -10,6 +10,10 @@ monitoring the tone of forum threads.
 
 * <b>Overview:</b> http://community.openamplify.com/blogs/quickstart/pages/overview.aspx
 
+== Install
+
+  gem install openamplify
+
 == Usage
 
 === Show the result from OpenAmplify as a Hash
