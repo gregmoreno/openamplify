@@ -54,25 +54,16 @@ module OpenAmplify
     end
   
     # Make this class behave like a Hash
-    # TODO: Add more methods
-    
     def each
       response.each do |k, v|
         yield(k, v)
       end
     end
-    
-    ['has_key?', '==', '[]', 'fetch', 'empty?', 'include?', 'inspect', 
-      'key?', 'keys', 'length', 'member?', 'merge', 'merge!'
-    ].each do |method|
-      class_eval <<-EOS
-        def #{method}(*args)
-          response.send('#{method}', *args)
-        end
-      EOS
+
+    def method_missing(name, *args, &block)
+      response.send(name, *args, &block)
     end
-    ## Hash methods end here
-    
+     
     # Support the different formats. Note this would entail another request
     # to openamplify
     %w(xml json rdf csv oas signals pretty).each do |format|
