@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{openamplify}
-  s.version = "0.1.1"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Greg Moreno"]
-  s.date = %q{2010-06-05}
+  s.date = %q{2010-06-11}
   s.description = %q{The OpenAmplify API reads text you supply and returns linguistic data explaining and classifying the content.}
   s.email = %q{rubyoncloud@gmail.com}
   s.extra_rdoc_files = [
