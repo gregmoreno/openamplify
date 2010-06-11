@@ -6,7 +6,7 @@ module OpenAmplify
   API_URL = "http://portaltnx20.openamplify.com/AmplifyWeb_v20/AmplifyThis"
 
   class Client
-    def initialize(options)
+    def initialize(options={})
       @options = { :base_url => API_URL }
       @options.merge!(OpenAmplify.symbolize_keys(options))
     end
