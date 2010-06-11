@@ -36,6 +36,12 @@ monitoring the tone of forum threads.
   # 'response' works like a Hash
   puts response['Topics']
 
+  # or use the shortcuts
+  response.top_topics
+  response.proper_nouns
+  response.locations
+  response.domains
+
 === Output Format
 
 In case you need a different format, OpenAmplify supports XML, JSON, RDF, CSV.
@@ -68,6 +74,15 @@ The different options and explanations are available at http://community.openamp
   response['Topics']  # => should be another big Hash of key-value pairs
   response['Demographics'] # => nil
 
+=== POST method
+
+By default, GET is used. If you need to analyze lots of text, use POST
+
+  client = OpenAmplify::Client.new(:api_key => API_KEY, :method => :post)
+
+  # or
+  client.method = :post
+  
 === Request URL
 
 In case you are wondering what the request URL looks like:
