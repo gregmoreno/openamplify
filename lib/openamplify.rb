@@ -7,15 +7,16 @@ module OpenAmplify
 
   class Client
     def initialize(options={})
-      @options = { :base_url => API_URL }
+      @options = { :base_url => API_URL, :method => :get }
       @options.merge!(OpenAmplify.symbolize_keys(options))
     end
 
     def analyze_text(text)
-      Response.new(:base_url => @options[:base_url], :query => query.merge(:inputText => text))
+      Response.new(:base_url => @options[:base_url], :query => query.merge(:inputText => text), 
+                   :method => @options[:method])
     end
     
-    %w(api_key analysis base_url).each do |attr|
+    %w(api_key analysis base_url method).each do |attr|
       class_eval <<-EOS
         def #{attr}
           @options[:#{attr}]
@@ -49,7 +50,6 @@ module OpenAmplify
       @request_url ||= compose_url(@options[:base_url], @options[:query]) 
     end
     
-    # Make this class behave like a Hash
     def each
       response.each do |k, v|
         yield(k, v)
@@ -65,7 +65,7 @@ module OpenAmplify
     %w(xml json rdf csv oas signals pretty).each do |format|
       class_eval <<-EOS
         def to_#{format}
-          get('#{format}')
+          fetch_as_format(:#{format})
         end
       EOS
     end
@@ -87,19 +87,18 @@ module OpenAmplify
     end
 
     private
-
-    def response
-      @response ||= get_response
-    end
-
     def compose_url(path, params)
       path + '?' + URI.escape(params.collect{ |k, v| "#{k}=#{v}" }.join('&'))
     end
+
+    def response
+      @response ||= fetch_response
+    end
   
-    def get_response
-      response = get('json') 
+    def fetch_response
+      response = fetch_as_format(:json)
       result   = JSON.parse(response)
-     
+
       if analysis = @options[:query][:analysis]
         name = analysis.sub(/./){ |s| s.upcase }
         result["ns1:#{name}Response"]["#{name}Return"]
@@ -108,10 +107,22 @@ module OpenAmplify
       end
     end
 
-    def get(format)
-      params = @options[:query]
-      url    = compose_url(@options[:base_url], params.merge(:outputFormat => format))
+    def fetch_as_format(format)
+      fetch(@options[:base_url], @options[:query].merge(:outputFormat => format), @options[:method])
+    end
+
+    def fetch(path, params, method)
+      self.send(method, path, params)
+    end
+
+    def get(path, params)
+      url = compose_url(path, params)
       Net::HTTP.get_response(URI.parse(url)).body
+    end
+
+    def post(path, params)
+      uri = URI::parse(path)
+      Net::HTTP.post_form(uri, params).body
     end
 
   end # OpenAmplify::Response
