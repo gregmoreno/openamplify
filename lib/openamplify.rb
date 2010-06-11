@@ -49,10 +49,6 @@ module OpenAmplify
       @request_url ||= compose_url(@options[:base_url], @options[:query]) 
     end
     
-    def response
-      @response ||= get_response
-    end
-  
     # Make this class behave like a Hash
     def each
       response.each do |k, v|
@@ -74,7 +70,27 @@ module OpenAmplify
       EOS
     end
 
+    def top_topics
+      response && response['Topics']['TopTopics']
+    end
+
+    def proper_nouns
+      response && response['Topics']['ProperNouns']
+    end
+
+    def locations
+      response && response['Topics']['Locations']
+    end
+
+    def domains
+      response && response['Topics']['Domains']
+    end
+
     private
+
+    def response
+      @response ||= get_response
+    end
 
     def compose_url(path, params)
       path + '?' + URI.escape(params.collect{ |k, v| "#{k}=#{v}" }.join('&'))
