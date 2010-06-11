@@ -71,11 +71,20 @@ module OpenAmplify
     end
 
     def top_topics
-      response && response['Topics']['TopTopics']
+      items = response && response['Topics']['TopTopics']
     end
 
     def proper_nouns
-      response && response['Topics']['ProperNouns']
+      items = response && response['Topics']['ProperNouns']
+
+      return items if items.is_a?(Array)
+
+      # I'm not sure if this is the default behavior if
+      # only a single item is found, or if it is a bug
+      # TODO: check other helpers as well
+      if items.is_a?(Hash)
+        return [ items['TopicResult'] ]
+      end
     end
 
     def locations
