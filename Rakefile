@@ -10,7 +10,11 @@ begin
     gem.email       = "rubyoncloud@gmail.com"
     gem.homepage    = "http://github.com/gregmoreno/openamplify"
     gem.authors     = ["Greg Moreno"]
+
     gem.add_dependency "json", "~>1.2"
+
+    gem.add_development_dependency "shoulda", "~> 2.11"  
+
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
@@ -21,9 +25,13 @@ end
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
+  test.ruby_opts << "-rubygems"
   test.pattern = 'test/**/test_*.rb'
   test.verbose = true
 end
+# Note to run a single test do:
+# ruby -Ilib test/test_foo.rb
+
 
 begin
   require 'rcov/rcovtask'
