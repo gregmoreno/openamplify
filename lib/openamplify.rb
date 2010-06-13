@@ -7,16 +7,17 @@ module OpenAmplify
 
   class Client
     def initialize(options={})
-      @options = { :base_url => API_URL, :method => :get }
+      @options = { :api_url => API_URL, :method => :get }
       @options.merge!(OpenAmplify.symbolize_keys(options))
     end
 
     def analyze_text(text)
-      Response.new(:base_url => @options[:base_url], :query => query.merge(:inputText => text), 
+      validate
+      Response.new(:api_url => @options[:api_url], :query => query.merge(:inputText => text), 
                    :method => @options[:method])
     end
     
-    %w(api_key analysis base_url method).each do |attr|
+    %w(api_key analysis api_url method).each do |attr|
       class_eval <<-EOS
         def #{attr}
           @options[:#{attr}]
@@ -47,7 +48,7 @@ module OpenAmplify
     end
 
     def request_url
-      @request_url ||= compose_url(@options[:base_url], @options[:query]) 
+      @request_url ||= compose_url(@options[:api_url], @options[:query]) 
     end
     
     def each
@@ -117,7 +118,7 @@ module OpenAmplify
     end
 
     def fetch_as_format(format)
-      fetch(@options[:base_url], @options[:query].merge(:outputFormat => format), @options[:method])
+      fetch(@options[:api_url], @options[:query].merge(:outputFormat => format), @options[:method])
     end
 
     def fetch(path, params, method)
@@ -146,3 +147,5 @@ module OpenAmplify
   end
 
 end # module OpenAmplify
+
+require 'openamplify/validations'
