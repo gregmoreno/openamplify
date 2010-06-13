@@ -50,6 +50,10 @@ module OpenAmplify
     def request_url
       @request_url ||= compose_url(@options[:api_url], @options[:query]) 
     end
+
+    def reload
+      response
+    end
     
     def each
       response.each do |k, v|
@@ -97,6 +101,7 @@ module OpenAmplify
     end
 
     private
+
     def compose_url(path, params)
       path + '?' + URI.escape(params.collect{ |k, v| "#{k}=#{v}" }.join('&'))
     end
@@ -122,17 +127,22 @@ module OpenAmplify
     end
 
     def fetch(path, params, method)
+      raise OpenAmplify::NotSupported unless [:get, :post].include?(method.to_sym)
       self.send(method, path, params)
     end
 
     def get(path, params)
-      url = compose_url(path, params)
-      Net::HTTP.get_response(URI.parse(url)).body
+      uri      = URI.parse(compose_url(path, params))
+      response = Net::HTTP.get_response(uri)
+      self.class.validate(response) 
+      response.body
     end
 
     def post(path, params)
-      uri = URI::parse(path)
-      Net::HTTP.post_form(uri, params).body
+      uri      = URI::parse(path)
+      response = Net::HTTP.post_form(uri, params)
+      self.class.validate(response)
+      response.body
     end
 
   end # OpenAmplify::Response

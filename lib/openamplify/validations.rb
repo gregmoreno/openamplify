@@ -10,6 +10,25 @@ module OpenAmplify
     end
   end
 
+
+  class NotAcceptable < StandardError; end
+  class NotSupported  < StandardError; end
+  class Forbidden     < StandardError; end
+
+
+  class Response
+    def self.validate(response)
+      case response.code.to_i
+        when 403
+          raise Forbidden, "(#{response.code}: #{response.message}) #{response.body}"
+        when 405
+          raise NotSupported, "(#{response.code}: #{response.message}) #{response.body}"
+        when 406
+          raise NotAcceptable, "(#{response.code}: #{response.message}) #{response.body}" 
+      end
+    end
+  end
+
 end
 
 class String
