@@ -62,9 +62,12 @@ class OpenAmplifyTest < Test::Unit::TestCase
       end
     end
 
+    #pending "show the request url"
+
   end  # Response
 
   context "Request methods" do
+
     
     should "raise an error if not supported" do
       assert_raises OpenAmplify::NotSupported do
@@ -85,7 +88,11 @@ class OpenAmplifyTest < Test::Unit::TestCase
   end # Request methods
 
   def client
-    @client ||= OpenAmplify::Client.new(:api_key => ENV['OPEN_AMPLIFY_KEY'])
+    @client ||= OpenAmplify::Client.new(:api_key => api_key)
+  end
+
+  def api_key
+    ENV['OPEN_AMPLIFY_KEY']
   end
 
 end # OpenAmplifyTest

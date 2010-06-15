@@ -12,9 +12,8 @@ module OpenAmplify
     end
 
     def analyze_text(text)
-      validate
-      Response.new(:api_url => @options[:api_url], :query => query.merge(:inputText => text), 
-                   :method => @options[:method])
+      OpenAmplify.validate_client!(self)
+      Response.new(self, :query => query.merge(:inputText => text), :method => @options[:method])
     end
     
     %w(api_key analysis api_url method).each do |attr|
@@ -28,8 +27,19 @@ module OpenAmplify
         end
       EOS
     end
+    
+    def fetch(params, method)
+      raise OpenAmplify::NotSupported unless [:get, :post].include?(method.to_sym)
+      Client::send(method, self.api_url, params)
+    end
+
+    def self.compose_url(path, params)
+      path + '?' + URI.escape(params.collect{ |k,v| "#{k}=#{v}" }.join('&'))
+    end
+
 
     private
+
 
     def query
       q = { :apiKey => @options[:api_key] }
@@ -37,18 +47,34 @@ module OpenAmplify
       q
     end
 
+    def self.get(path, params)
+      uri      = URI.parse(compose_url(path, params))
+      response = Net::HTTP.get_response(uri)
+      OpenAmplify.validate_response!(response) 
+      response.body
+    end
+
+    def self.post(path, params)
+      uri      = URI::parse(path)
+      response = Net::HTTP.post_form(uri, params)
+      OpenAmplify.validate_response!(response)
+      response.body
+    end
+
   end # OpenAmplify::Client 
+
 
   # Contains the response from OpenAmplify
   class Response
     include Enumerable
 
-    def initialize(options)
+    def initialize(client, options)
+      @client  = client
       @options = options
     end
 
     def request_url
-      @request_url ||= compose_url(@options[:api_url], @options[:query]) 
+      @request_url ||= Client.compose_url(@client.api_url, @options[:query]) 
     end
 
     def reload
@@ -100,11 +126,11 @@ module OpenAmplify
       response && response['Topics']['Domains']
     end
 
-    private
-
-    def compose_url(path, params)
-      path + '?' + URI.escape(params.collect{ |k, v| "#{k}=#{v}" }.join('&'))
+    def styles
+      response && response['Styles']
     end
+
+    private
 
     def response
       @response ||= fetch_response
@@ -123,26 +149,7 @@ module OpenAmplify
     end
 
     def fetch_as_format(format)
-      fetch(@options[:api_url], @options[:query].merge(:outputFormat => format), @options[:method])
-    end
-
-    def fetch(path, params, method)
-      raise OpenAmplify::NotSupported unless [:get, :post].include?(method.to_sym)
-      self.send(method, path, params)
-    end
-
-    def get(path, params)
-      uri      = URI.parse(compose_url(path, params))
-      response = Net::HTTP.get_response(uri)
-      self.class.validate(response) 
-      response.body
-    end
-
-    def post(path, params)
-      uri      = URI::parse(path)
-      response = Net::HTTP.post_form(uri, params)
-      self.class.validate(response)
-      response.body
+      @client.fetch(@options[:query].merge(:outputFormat => format), @options[:method])
     end
 
   end # OpenAmplify::Response
