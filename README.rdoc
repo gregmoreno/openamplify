@@ -94,4 +94,4 @@ If someday, OpenAmplify decides to change their API URL:
   client.base_url = 'http://newurl'
 
 == Testing
-  rake OPEN_AMPLIFY_KEY=YOUR_KEY
+  rake test OPEN_AMPLIFY_KEY=YOUR_KEY
