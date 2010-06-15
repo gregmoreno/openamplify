@@ -92,3 +92,6 @@ In case you are wondering what the request URL looks like:
 If someday, OpenAmplify decides to change their API URL:
 
   client.base_url = 'http://newurl'
+
+== Testing
+  rake OPEN_AMPLIFY_KEY=YOUR_KEY
