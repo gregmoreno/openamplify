@@ -5,3 +5,6 @@ tmp/
 log/
 pkg/
 *.swp
+*.gem
+.bundle
+Gemfile.lock
