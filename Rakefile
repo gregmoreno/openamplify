@@ -7,9 +7,6 @@ Rake::TestTask.new do |test|
   test.pattern = 'test/**/*_test.rb'
   test.verbose = true
 end
-# Note to run a single test do:
-# ruby -Ilib test/test_foo.rb
-
 
 #require 'rubygems'
 #require 'rake'

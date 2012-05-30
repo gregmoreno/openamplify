@@ -4,10 +4,10 @@ require 'openamplify/version'
 module OpenAmplify
   # Defines constants and methods for configuring a client
   module Configuration
-    VALID_OPTIONS_KEYS = [:consumer_key, :endpoint, :user_agent, :http_method, :parser].freeze
+    VALID_OPTIONS_KEYS = [:consumer_key, :endpoint, :user_agent, :http_method].freeze
 
     DEFAULT_CONSUMER_KEY  = nil
-    DEFAULT_ENDPOINT      = '/http://portaltnx20.openamplify.com/AmplifyWeb_v20'
+    DEFAULT_ENDPOINT      = '/http://portaltnx20.openamplify.com/AmplifyWeb_v20/AmplifyThis'
     DEFAULT_HTTP_METHOD   = :post
 
     # The user agent that will be sent to the API endpoint if none is set

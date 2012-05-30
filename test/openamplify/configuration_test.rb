@@ -1,7 +1,6 @@
-# require File.dirname(__FILE__) + '../helper'
 require 'helper'
 
-describe OpenAmplify do
+describe OpenAmplify::Configuration do
 
   after do
     OpenAmplify.reset

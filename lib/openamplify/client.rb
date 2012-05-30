@@ -1,3 +1,5 @@
+require 'openamplify/analysis/context'
+
 module OpenAmplify
   # Provides access to the OpenAmplify API http://portaltnx20.openamplify.com/AmplifyWeb_v20/
   #
@@ -17,13 +19,14 @@ module OpenAmplify
 
       merged_options = OpenAmplify.options.merge(options)
       Configuration::VALID_OPTIONS_KEYS.each do |key|
-        send("#{key}=", merge_options[key])
+        send("#{key}=", merged_options[key])
       end
     end
 
-    def analyze(text)
-
+    def amplify_this(options)
+      Analysis::Context.new(self, options)
     end
 
   end # Client
+
 end
