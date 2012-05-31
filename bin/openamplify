@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'awesome_print'
+
+$:.unshift(File.join(File.dirname(__FILE__), "/../lib"))
+require 'openamplify'
+
+opts = {
+  :output_format => :json
+}
+
+OptionParser.new do |o|
+  o.banner = "USAGE: #{$0} [options] input"
+
+  o.on('--api-key [APIKEY]', 'API key') do |f|
+    opts[:api_key] = f
+  end
+
+  o.on('-f', '--format [FORMAT]', 'Output format: json (default), xml, rdf, rdfa, csv signals, pretty, oas dart') do |f|
+    opts[:output_format] = f.downcase.to_sym
+  end
+
+  o.on('--analysis [TYPE]', 'Type of signals request: all (default), toptopics, topics, actions, topicintentions, demographics, styles') do |f|
+    opts[:analysis] = f.downcase.to_sym
+  end
+
+  # TODO: Add more options
+
+end.parse!
+
+client   = OpenAmplify::Client.new(opts)
+input    = ARGV.first
+response = client.amplify(input)
+
+ap response
+
+case opts[:output_format]
+  when :json
+    require 'json'
+    puts JSON.pretty_generate JSON.load(response)
+  when :xml, :rdf, :rdfa
+    require 'rexml/document'
+    doc = REXML::Document.new(response)
+    doc.write($stdout, 2)
+  else
+    puts response
+end
+
