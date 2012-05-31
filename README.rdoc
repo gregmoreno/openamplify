@@ -38,22 +38,25 @@ monitoring the tone of forum threads.
     config.scoring = :todo
   end
 
-Settings can be overriden by the client
+Default settings can be overriden by the client
 
   client = OpenAmplify::Client.new(:http_method => :get)
+
+Or when you start 'amplifying'.
+
+  result = client.amplify('input', :output_format => :rdf)
 
 === Usage
 
   client = OpenAmplify::Client.new
 
   text = "After getting the MX1000 laser mouse and the Z-5500 speakers i fell in love with logitech"
-  analysis = client.amplify_this(:input_text => text)
+  analysis = client.amplify(text)
   puts analysis  # default as xml
 
-Some helpers for your convenience.
+It knows if the input is a URL and uses the right webservice param (ie. sourceurl)
 
-  client.analyze_text(text)
-  client.analyze_url('http://gregmoreno.ca')
+  client.amplify('http://theonion.com')
 
 In case you need a different format, OpenAmplify supports XML, JSON, RDF, CSV.
 It can also return the result as a fancy HTML page.
@@ -70,11 +73,21 @@ It can also return the result as a fancy HTML page.
   puts analysis.to_signals
 
 
+== Command-line 
+
+OpenAmplify gem comes with a command-line tool.
+
+  openamplify --api-key=APIKEY --format=json --analysis=topics "sample input text"
+
 == Upgrading from 0.2.3 to 0.3.0
 
 Note 0.3.0 is a major revamp of the code. In general, it is better but
 if you encounter a problem, please let me know. Or better, submit a pull
 request.
+
+The following methods are deprecated and will be removed in 0.3.1
+
+  analyze_text('input')
 
 The following methods are no longer supported. I figure it's better to
 let the caller decide how they want to traverse the results.

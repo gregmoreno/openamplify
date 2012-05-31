@@ -13,8 +13,8 @@ module OpenAmplify
   class Error::ServerError        < OpenAmplify::Error; end
   class Error::ServiceUnavailable < Error::ServerError; end
 
-  class Error::ClientError < OpenAmplify::Error; end
-  class Error::Forbidden   < Error::ClientError; end
-  class Error::BadRequest  < Error::ClientError; end
-
+  class Error::ClientError     < OpenAmplify::Error; end
+  class Error::Forbidden       < Error::ClientError; end
+  class Error::BadRequest      < Error::ClientError; end
+  class Error::RequestTooLarge < Error::ClientError; end
 end

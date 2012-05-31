@@ -16,6 +16,8 @@ module OpenAmplify
           raise OpenAmplify::Error::BadRequest.new body, headers
         when 403
           raise OpenAmplify::Error::Forbidden.new body, headers
+        when 413
+          raise OpenAmplify::Error::RequestTooLarge.new body, headers
         end
       end
 
