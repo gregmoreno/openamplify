@@ -1,8 +1,9 @@
 require 'helper'
 
 describe OpenAmplify::Client do
+
   before do
-    @keys = OpenAmplify::Configuration::VALID_OPTIONS_KEYS
+    @keys = OpenAmplify::Configuration::VALID_CONFIG_KEYS
   end
 
   describe 'with module configuration' do
@@ -28,11 +29,14 @@ describe OpenAmplify::Client do
     describe 'with class configuration' do
       before do
         @config = {
-          :api_key      => 'ak',
-          :endpoint     => 'ep',
-          :user_agent   => 'ua',
-          :http_method  => 'hm',
-          :http_adapter => 'ha',
+          :api_key       => 'ak',
+          :analysis      => 'an',
+          :output_format => 'of',
+          :scoring       => 'sc',
+          :endpoint      => 'ep',
+          :user_agent    => 'ua',
+          :http_method   => 'hm',
+          :http_adapter  => 'ha',
         }
       end
 

@@ -6,9 +6,19 @@ in the fine tradition of APIs and mashups, up to you. Some possibilities
 might include pairing ads with articles, creating rich tag-clouds, or 
 monitoring the tone of forum threads.
 
+=== Supported version
+
+3.0
+
 == Helpful links
 
-* <b>Overview:</b> http://community.openamplify.com/blogs/quickstart/pages/overview.aspx
+* <b>Overview:</b> http://openamplify.com/quickstart
+
+== Upgrading from 0.2.3 to 0.3.0
+
+Note 0.3.0 is a major revamp of the code. In general, it is better but
+if you encounter a problem, please let me know. Or better, submit a pull
+request.
 
 == Install
 
@@ -38,14 +48,18 @@ Settings can be overriden by the client
 
   client = OpenAmplify::Client.new(:http_method => :get)
 
-
 === Usage
 
   client = OpenAmplify::Client.new
 
   text = "After getting the MX1000 laser mouse and the Z-5500 speakers i fell in love with logitech"
-  analysis = client.amplify_this(text)
+  analysis = client.amplify_this(:input_text => text)
   puts analysis  # default as xml
+
+Some helpers for your convenience.
+
+  client.analyze_text(text)
+  client.analyze_url('http://gregmoreno.ca')
 
 In case you need a different format, OpenAmplify supports XML, JSON, RDF, CSV.
 It can also return the result as a fancy HTML page.

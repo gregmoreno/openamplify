@@ -10,25 +10,15 @@ module OpenAmplify
   #   text = "After getting the MX1000 laser mouse and the Z-5500 speakers i fell in love with logitech"
   #   OpenAmplify::Client.new.analyze_text(text)
 
-  # TODO: can it do this OpenAmplify::Client.analyze(text) ? after configuring it
-
   class Client
     include OpenAmplify::Connection
     include OpenAmplify::Request
 
-    attr_accessor *Configuration::VALID_OPTIONS_KEYS
-    attr_accessor *Analysis::Configuration::VALID_OPTIONS_KEYS
-
-    attr_accessor :options
+    attr_accessor *Configuration::VALID_CONFIG_KEYS
 
     def initialize(options={})
       merged_options = OpenAmplify.options.merge(options)
-      Configuration::VALID_OPTIONS_KEYS.each do |key|
-        send("#{key}=", merged_options[key])
-      end
-
-      merged_options = Analysis::Configuration.options.merge(options)
-      Analysis::Configuration::VALID_OPTIONS_KEYS.each do |key|
+      Configuration::VALID_CONFIG_KEYS.each do |key|
         send("#{key}=", merged_options[key])
       end
     end
@@ -38,8 +28,16 @@ module OpenAmplify
       Analysis::Context.new(self, options)
     end
 
+    def analyze_text(text)
+      amplify_this :input_text => text
+    end
+
+    def analyze_url(url)
+      amplify_this :source_url => url
+    end
+
     def analysis_options
-      Hash[ *Analysis::Configuration::VALID_OPTIONS_KEYS.map { |key| [key, send(key)] }.flatten ]
+      Hash[ *Configuration::VALID_OPTIONS_KEYS.map { |key| [key, send(key)] }.flatten ]
     end
 
     def request_analysis(options)
@@ -58,8 +56,10 @@ module OpenAmplify
     # Formulate the parameters that is understood by
     # the OpenAmplify webservice.
     def prepare_request_params(options)
+
+      # TODO no need to this with api_key since format has changed
       params = {
-        'apiKey' => self.api_key,
+        'apikey' => self.api_key,
       }
 
       options.inject(params) do |params, kv|

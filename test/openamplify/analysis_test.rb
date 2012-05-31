@@ -35,11 +35,21 @@ describe OpenAmplify::Analysis do
 
   end
 
+  it 'can analyze text' do
+    result = @api.analyze_text(amplify_params[:input_text])
+    result.wont_be_nil
+  end
+
+  it 'can analyze a website' do
+    result = @api.analyze_url('http://gregmoreno.ca') # or amplify_this(:source_url => 'http://path/')
+    result.wont_be_nil
+  end
+
   it 'should have default values' do
     result = @api.amplify_this({})
 
-    OpenAmplify::Analysis::Configuration::VALID_OPTIONS_KEYS.each do |key|
-      result.send(key).must_equal OpenAmplify::Analysis::Configuration.options[key]
+    OpenAmplify::Configuration::VALID_OPTIONS_KEYS.each do |key|
+      result.send(key).must_equal OpenAmplify.options[key]
     end
   end
 

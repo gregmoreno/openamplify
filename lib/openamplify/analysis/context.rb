@@ -1,12 +1,12 @@
-require 'openamplify/analysis/configuration'
-
 module OpenAmplify
 
   module  Analysis
 
     class Context
-      attr_accessor *Analysis::Configuration::VALID_OPTIONS_KEYS
-      attr_accessor *Analysis::Configuration::VALID_INPUT_KEYS
+      VALID_INPUT_KEYS   = [:source_url, :input_text].freeze
+
+      attr_accessor *OpenAmplify::Configuration::VALID_OPTIONS_KEYS
+      attr_accessor *VALID_INPUT_KEYS
 
       attr_accessor :options, :client
       attr_reader   :result
@@ -14,12 +14,12 @@ module OpenAmplify
       def initialize(client, options)
         self.client  = client
 
-        merged_options = Analysis::Configuration.options.merge(options)
-        Analysis::Configuration::VALID_OPTIONS_KEYS.each do |key|
+        merged_options = OpenAmplify.options.merge(options)
+        OpenAmplify::Configuration::VALID_OPTIONS_KEYS.each do |key|
           send("#{key}=", merged_options[key])
         end
 
-        Analysis::Configuration::VALID_INPUT_KEYS.each do |key|
+        VALID_INPUT_KEYS.each do |key|
           send("#{key}=", merged_options[key])
         end
       end
@@ -61,7 +61,7 @@ module OpenAmplify
       end
 
       def request_analysis_options
-        options = Hash[* Analysis::Configuration::VALID_OPTIONS_KEYS.map { |key| [key, send(key) ]}.flatten ]
+        options = Hash[* OpenAmplify::Configuration::VALID_OPTIONS_KEYS.map { |key| [key, send(key) ]}.flatten ]
 
         # TODO: Check for blank or empty string
         if self.input_text
