@@ -28,12 +28,6 @@ module OpenAmplify
       Analysis::Context.new(self, input, options)
     end
 
-    # @deprecated Please use {#amplify} instead
-    def analyze_text(input)
-      warn "[DEPRECATION] `analyze_text` is deprecated.  Please use `amplify` instead."
-      amplify input
-    end
-
     def analysis_options
       Hash[ *Configuration::VALID_OPTIONS_KEYS.map { |key| [key, send(key)] }.flatten ]
     end
@@ -48,6 +42,22 @@ module OpenAmplify
         get(self.endpoint, params)
       end
     end
+
+    # @deprecated Please use {#amplify} instead
+    def analyze_text(input)
+      warn "[DEPRECATION] `analyze_text` is deprecated.  Please use `amplify` instead."
+      amplify input
+    end
+
+    # @deprecated Please use {#endpoint} instead
+    def base_url=(url)
+      warn "[DEPRECATION] `base_url` is deprecated.  Please use `endpoint` instead."
+      self.endpoint = url
+    end
+
+
+
+
 
     private
 

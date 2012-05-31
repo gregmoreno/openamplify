@@ -87,7 +87,8 @@ request.
 
 The following methods are deprecated and will be removed in 0.3.1
 
-  analyze_text('input')
+  client.analyze_text('input')
+  client.base_url = 'http://domain.dev'
 
 The following methods are no longer supported. I figure it's better to
 let the caller decide how they want to traverse the results.
@@ -106,16 +107,6 @@ let the caller decide how they want to traverse the results.
   response.proper_nouns
   response.locations
   response.domains
-
-=== Request URL
-
-In case you are wondering what the request URL looks like:
-
-  response.request_url
-
-If someday, OpenAmplify decides to change their API URL:
-
-  client.base_url = 'http://newurl'
 
 == Testing
   rake test OPEN_AMPLIFY_KEY=YOUR_KEY
