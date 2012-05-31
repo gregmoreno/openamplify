@@ -1,6 +1,5 @@
 require 'openamplify/configuration'
 require 'openamplify/client'
-#require 'openamplify/validations'
 
 module OpenAmplify
   extend Configuration

@@ -8,7 +8,7 @@ module OpenAmplify
   # Basic usage of the library is to call supported methods via the Client class.
   #
   #   text = "After getting the MX1000 laser mouse and the Z-5500 speakers i fell in love with logitech"
-  #   OpenAmplify::Client.new.analyze_text(text)
+  #   OpenAmplify::Client.new.amplify(text)
 
   class Client
     include OpenAmplify::Connection
