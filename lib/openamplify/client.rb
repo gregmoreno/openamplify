@@ -55,10 +55,6 @@ module OpenAmplify
       self.endpoint = url
     end
 
-
-
-
-
     private
 
     # Formulate the parameters that is understood by

@@ -1,3 +1,7 @@
+0.3.0 - TBA
+      * Supports OpenAmplify v3.0 by default
+      * Major code revamp
+      * Added command-line tool 'openamplify'
 0.2.2 - Jun 14, 2010
       * refactored the code
 0.2.1 - Jun 13, 2010

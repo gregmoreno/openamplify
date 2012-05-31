@@ -7,7 +7,7 @@ module OpenAmplify
 
       attr_accessor *VALID_OPTIONS_KEYS
 
-      attr_accessor :options, :client
+      attr_accessor :client
       attr_reader   :result
 
       def initialize(client, input, options)
@@ -57,7 +57,7 @@ module OpenAmplify
       end
 
       def request_analysis_options
-        options = Hash[* VALID_OPTIONS_KEYS.map { |key| [key, send(key) ]}.flatten ]
+        Hash[* VALID_OPTIONS_KEYS.map { |key| [key, send(key) ]}.flatten ]
       end
 
     end # Context

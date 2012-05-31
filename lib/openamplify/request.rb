@@ -30,13 +30,6 @@ module OpenAmplify
       options[:raw] ? response : response.body
     end
 
-    def compose_url(path, params={})
-      uri =  URI(path)
-      uri.query = URI.econ
-      path + '?' + URI.escape(params.collect{ |k,v| "#{k}=#{v}" }.join('&'))
-    end
-
-
   end # Request
 
 end
