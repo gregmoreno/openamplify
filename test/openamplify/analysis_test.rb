@@ -1,10 +1,13 @@
 require 'helper'
 
-require 'awesome_print'
-
 describe OpenAmplify::Analysis do
   before do
     @api = OpenAmplify::Client.new
+  end
+
+  it 'should output' do
+    result = @api.amplify_this(:input_text => 'this is a test', :http_method => :post)
+    result.to_s
   end
 
   it 'should have default values' do
@@ -42,7 +45,7 @@ describe OpenAmplify::Analysis do
       :scoring       => :standard,
     }
 
-    api      = OpenAmplify::Client.new(options)
+    api    = OpenAmplify::Client.new(options)
     result = api.amplify_this(:input_text    => 'sample text')
 
     options.each do |key, value|
@@ -50,12 +53,5 @@ describe OpenAmplify::Analysis do
     end
   end
 
-
-
-  it 'should call the service' do
-    result = @api.amplify_this(:input_text => 'sample text')
-    ap result.call
-  end
-
-
+  # TODO: empty input_text, present both input_string and source_uri
 end

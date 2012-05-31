@@ -31,7 +31,8 @@ describe OpenAmplify::Client do
           :api_key      => 'ak',
           :endpoint     => 'ep',
           :user_agent   => 'ua',
-          :http_method  => 'hm'
+          :http_method  => 'hm',
+          :http_adapter => 'ha',
         }
       end
 

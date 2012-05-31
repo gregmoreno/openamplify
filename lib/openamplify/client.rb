@@ -1,4 +1,5 @@
 require 'openamplify/analysis/context'
+require 'openamplify/connection'
 require 'openamplify/request'
 
 module OpenAmplify
@@ -12,6 +13,7 @@ module OpenAmplify
   # TODO: can it do this OpenAmplify::Client.analyze(text) ? after configuring it
 
   class Client
+    include OpenAmplify::Connection
     include OpenAmplify::Request
 
     attr_accessor *Configuration::VALID_OPTIONS_KEYS
@@ -25,7 +27,7 @@ module OpenAmplify
         send("#{key}=", merged_options[key])
       end
 
-      merged_options = Analysis::Configuration.options.merge(merged_options)
+      merged_options = Analysis::Configuration.options.merge(options)
       Analysis::Configuration::VALID_OPTIONS_KEYS.each do |key|
         send("#{key}=", merged_options[key])
       end

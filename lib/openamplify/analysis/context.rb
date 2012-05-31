@@ -24,13 +24,23 @@ module OpenAmplify
         end
       end
 
+      def to_s
+        call
+      end
+
       def call
         self.analysis = self.client.request_analysis(request_analysis_options)
       end
 
       def request_analysis_options
-        Hash[* Analysis::Configuration::VALID_OPTIONS_KEYS.map { |key| [key, send(key) ]}.flatten ]
-        # TODO: Add rules here? like mutex source_url:input_text
+        options = Hash[* Analysis::Configuration::VALID_OPTIONS_KEYS.map { |key| [key, send(key) ]}.flatten ]
+
+        # TODO: Check for blank or empty string
+        if self.input_text
+          options.merge(:input_text => self.input_text)
+        else
+          options.merge(:source_url => self.source_url)
+        end
       end
 
     end # Context
