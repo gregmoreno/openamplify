@@ -55,14 +55,9 @@ module OpenAmplify
 
     # Formulate the parameters that is understood by
     # the OpenAmplify webservice.
+    # ex: :api_key  becomes  'apikey'
     def prepare_request_params(options)
-
-      # TODO no need to this with api_key since format has changed
-      params = {
-        'apikey' => self.api_key,
-      }
-
-      options.inject(params) do |params, kv|
+      options.inject({}) do |params, kv|
         key, value = kv
         params.merge!("#{key.to_s.downcase.gsub(/_+/, '')}" => value)
       end
