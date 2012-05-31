@@ -3,23 +3,19 @@ module OpenAmplify
   module  Analysis
 
     class Context
-      VALID_INPUT_KEYS   = [:source_url, :input_text].freeze
+      VALID_OPTIONS_KEYS = OpenAmplify::Configuration::VALID_OPTIONS_KEYS + [:input]
 
-      attr_accessor *OpenAmplify::Configuration::VALID_OPTIONS_KEYS
-      attr_accessor *VALID_INPUT_KEYS
+      attr_accessor *VALID_OPTIONS_KEYS
 
       attr_accessor :options, :client
       attr_reader   :result
 
-      def initialize(client, options)
-        self.client  = client
+      def initialize(client, input, options)
+        self.client = client
+        self.input  = input
 
         merged_options = OpenAmplify.options.merge(options)
         OpenAmplify::Configuration::VALID_OPTIONS_KEYS.each do |key|
-          send("#{key}=", merged_options[key])
-        end
-
-        VALID_INPUT_KEYS.each do |key|
           send("#{key}=", merged_options[key])
         end
       end
@@ -61,14 +57,7 @@ module OpenAmplify
       end
 
       def request_analysis_options
-        options = Hash[* OpenAmplify::Configuration::VALID_OPTIONS_KEYS.map { |key| [key, send(key) ]}.flatten ]
-
-        # TODO: Check for blank or empty string
-        if self.input_text
-          options.merge(:input_text => self.input_text)
-        else
-          options.merge(:source_url => self.source_url)
-        end
+        options = Hash[* VALID_OPTIONS_KEYS.map { |key| [key, send(key) ]}.flatten ]
       end
 
     end # Context

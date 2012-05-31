@@ -23,17 +23,15 @@ module OpenAmplify
       end
     end
 
-    def amplify_this(options)
+    def amplify(input, options={})
       options = analysis_options.merge(options)
-      Analysis::Context.new(self, options)
+      Analysis::Context.new(self, input, options)
     end
 
-    def analyze_text(text)
-      amplify_this :input_text => text
-    end
-
-    def analyze_url(url)
-      amplify_this :source_url => url
+    # @deprecated Please use {#amplify} instead
+    def analyze_text(input)
+      warn "[DEPRECATION] `analyze_text` is deprecated.  Please use `amplify` instead."
+      amplify input
     end
 
     def analysis_options
@@ -57,9 +55,19 @@ module OpenAmplify
     # the OpenAmplify webservice.
     # ex: :api_key  becomes  'apikey'
     def prepare_request_params(options)
-      options.inject({}) do |params, kv|
+      params = detect_request_input options.delete(:input)
+
+      options.inject(params) do |params, kv|
         key, value = kv
         params.merge!("#{key.to_s.downcase.gsub(/_+/, '')}" => value)
+      end
+    end
+
+    def detect_request_input(input)
+      if input =~ /^https?:\/\//
+        { 'sourceurl' => input }
+      else
+        { 'inputtext' => input }
       end
     end
 

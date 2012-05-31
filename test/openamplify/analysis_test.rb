@@ -7,20 +7,20 @@ describe OpenAmplify::Analysis do
   end
 
   it 'can return result as string' do
-    result = @api.amplify_this(amplify_params)
-    result.wont_be_nil
+    result = @api.amplify_this amplify_input
+    result.to_s.wont_be_empty
   end
 
   describe 'output format' do
     it 'xml' do
-      result = @api.amplify_this(amplify_params.merge(:output_format => :xml))
+      result = @api.amplify_this(amplify_input, :output_format => :xml)
 
       require 'nokogiri'
       Nokogiri::XML(result).wont_be_nil
     end
 
     it 'json' do
-      result = @api.amplify_this(amplify_params.merge(:output_format => :json))
+      result = @api.amplify_this(amplify_input, :output_format => :json)
 
       require 'json'
       JSON.parse(result).wont_be_nil
@@ -28,40 +28,43 @@ describe OpenAmplify::Analysis do
 
     %w(xml json json_js rdf rdfa csv signals pretty dart oas).each do |format|
       it "should output #{format}" do
-        result = @api.amplify_this amplify_params
+        result = @api.amplify_this amplify_input
         result.send("to_#{format}").wont_be_nil
       end
     end
 
   end
 
-  it 'can analyze text' do
-    result = @api.analyze_text(amplify_params[:input_text])
-    result.wont_be_nil
-  end
+  describe 'input analysis' do
+    it 'knows a text' do
+      result = @api.amplify_this amplify_input
+      result.to_s.wont_be_empty
+    end
 
-  it 'can analyze a website' do
-    result = @api.analyze_url('http://gregmoreno.ca') # or amplify_this(:source_url => 'http://path/')
-    result.wont_be_nil
+    it 'knows a url' do
+      result = @api.amplify_this 'http://theonion.com'
+
+      require 'json'
+      JSON.parse(result.to_json).wont_be_nil
+    end
   end
 
   it 'should have default values' do
-    result = @api.amplify_this({})
+    result = @api.amplify_this amplify_input
 
     OpenAmplify::Configuration::VALID_OPTIONS_KEYS.each do |key|
       result.send(key).must_equal OpenAmplify.options[key]
     end
   end
 
-  it "should accept option values" do
+  it 'should accept option values' do
     options = {
       :analysis      => :topics,
       :output_format => :json,
       :scoring       => :standard,
-      :input_text    => 'sample text',
     }
 
-    result = @api.amplify_this(options)
+    result = @api.amplify_this amplify_input, options
 
     options.each do |key, value|
       result.send(key).must_equal options[key]
@@ -69,11 +72,11 @@ describe OpenAmplify::Analysis do
   end
 
   it 'should point the client' do
-    result = @api.amplify_this({})
+    result = @api.amplify_this amplify_input
     result.client.must_equal @api
   end
 
-  it "should accept option from client" do
+  it 'should accept option from client' do
     options = {
       :analysis      => :topics,
       :output_format => :json,
@@ -81,12 +84,19 @@ describe OpenAmplify::Analysis do
     }
 
     api = OpenAmplify::Client.new(options)
-    result = api.amplify_this(:input_text => 'sample text')
+    result = api.amplify_this amplify_input
 
     options.each do |key, value|
       result.send(key).must_equal options[key]
     end
   end
 
-  # TODO: empty input_text, present both input_string and source_uri
+  describe 'deprecated methods' do
+
+    it 'analyze_text' do
+      @api.analyze_text amplify_input
+    end
+
+  end
+
 end
