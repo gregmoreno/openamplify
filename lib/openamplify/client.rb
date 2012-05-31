@@ -15,19 +15,29 @@ module OpenAmplify
     include OpenAmplify::Request
 
     attr_accessor *Configuration::VALID_OPTIONS_KEYS
+    attr_accessor *Analysis::Configuration::VALID_OPTIONS_KEYS
+
     attr_accessor :options
 
     def initialize(options={})
-      self.options  = options
-
       merged_options = OpenAmplify.options.merge(options)
       Configuration::VALID_OPTIONS_KEYS.each do |key|
+        send("#{key}=", merged_options[key])
+      end
+
+      merged_options = Analysis::Configuration.options.merge(merged_options)
+      Analysis::Configuration::VALID_OPTIONS_KEYS.each do |key|
         send("#{key}=", merged_options[key])
       end
     end
 
     def amplify_this(options)
+      options = analysis_options.merge(options)
       Analysis::Context.new(self, options)
+    end
+
+    def analysis_options
+      Hash[ *Analysis::Configuration::VALID_OPTIONS_KEYS.map { |key| [key, send(key)] }.flatten ]
     end
 
     def request_analysis(options)

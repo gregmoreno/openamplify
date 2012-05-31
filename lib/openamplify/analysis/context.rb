@@ -6,6 +6,8 @@ module OpenAmplify
 
     class Context
       attr_accessor *Analysis::Configuration::VALID_OPTIONS_KEYS
+      attr_accessor *Analysis::Configuration::VALID_INPUT_KEYS
+
       attr_accessor :options, :client
       attr_reader   :analysis
 
@@ -14,6 +16,10 @@ module OpenAmplify
 
         merged_options = Analysis::Configuration.options.merge(options)
         Analysis::Configuration::VALID_OPTIONS_KEYS.each do |key|
+          send("#{key}=", merged_options[key])
+        end
+
+        Analysis::Configuration::VALID_INPUT_KEYS.each do |key|
           send("#{key}=", merged_options[key])
         end
       end

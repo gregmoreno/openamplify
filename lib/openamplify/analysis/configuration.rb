@@ -3,10 +3,12 @@ module OpenAmplify
   module Analysis
 
     module Configuration
-      VALID_OPTIONS_KEYS = [:analysis, :output_format, :scoring, :source_url, :input_text].freeze
+      VALID_OPTIONS_KEYS = [:analysis, :output_format, :scoring].freeze
+      VALID_INPUT_KEYS   = [:source_url, :input_text].freeze
 
       class << self
-        attr_accessor  *VALID_OPTIONS_KEYS
+        attr_accessor *VALID_OPTIONS_KEYS
+        attr_accessor *VALID_INPUT_KEYS
       end
 
       DEFAULT_ANALYSIS      = :all
@@ -31,14 +33,6 @@ module OpenAmplify
         self.source_url    = DEFAULT_SOURCE_URL
         self.input_text    = DEFAULT_INPUT_TEXT
       end
-
-      #def input_text(text)
-      #  self.input_text = text
-      #end
-
-      #def analysis(option)
-      #  self.analysis = option
-      #end
 
     end # Analysis
 

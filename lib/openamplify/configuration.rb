@@ -1,6 +1,8 @@
 require 'multi_json'
 require 'openamplify/version'
 
+# TODO: output_format, analysis, scoring can be specied in the client and becomes the default unless overriden
+
 module OpenAmplify
   # Defines constants and methods for configuring a client
   module Configuration
