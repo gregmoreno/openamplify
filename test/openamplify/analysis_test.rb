@@ -11,28 +11,28 @@ describe OpenAmplify::Analysis do
     result.wont_be_nil
   end
 
-  describe 'result as xml' do
-    it 'can via client' do
+  describe 'output format' do
+    it 'xml' do
       result = @api.amplify_this(amplify_params.merge(:output_format => :xml))
 
       require 'nokogiri'
       Nokogiri::XML(result).wont_be_nil
     end
 
-    # TODO:
-    # it 'can via method call' do
-    #   result = @api.amplify_this(:input_text = @input_text)
-    #   result.to_xml.wont_be_nil
-    # end
-  end
-
-  describe 'result as json' do
-    it 'can via client' do
+    it 'json' do
       result = @api.amplify_this(amplify_params.merge(:output_format => :json))
 
       require 'json'
       JSON.parse(result).wont_be_nil
     end
+
+    %w(xml json json_js rdf rdfa csv signals pretty dart oas).each do |format|
+      it "should output #{format}" do
+        result = @api.amplify_this amplify_params
+        result.send("to_#{format}").wont_be_nil
+      end
+    end
+
   end
 
   it 'should have default values' do

@@ -24,6 +24,15 @@ module OpenAmplify
         end
       end
 
+      # The empty?, to_s, to_str are to make our object play
+      # with others that expect a string.
+      #
+      # Example, you can do this:
+      #   puts result
+      #
+      # instead of:
+      #   puts result.to_s
+
       def empty?
         result.empty?
       end
@@ -33,14 +42,22 @@ module OpenAmplify
       end
       alias_method :to_str, :to_s
 
+      # Support various conversion helpers
+
+      %w(xml json json_js rdf rdfa csv signals pretty dart oas).each do |format|
+        define_method("to_#{format}") do
+          @result = call(:output_format => format)
+        end
+      end
+
       private
 
       def result
         @result ||= call
       end
 
-      def call
-        @result = client.request_analysis(request_analysis_options)
+      def call(options={})
+        @result = client.request_analysis(request_analysis_options.merge(options))
       end
 
       def request_analysis_options
