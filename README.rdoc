@@ -16,6 +16,54 @@ monitoring the tone of forum threads.
 
 == Usage
 
+=== Configure
+
+  OpenAmplify.configure do |config|
+    config.api_key     = 'YOUR_API_KEY'
+
+    # default :get
+    config.http_method = :post
+
+    # default :xml
+    config.output_format = :json
+
+    # default :all
+    config.analysis = :topics
+
+    # default :standard
+    config.scoring = :todo
+  end
+
+Settings can be overriden by the client
+
+  client = OpenAmplify::Client.new(:http_method => :get)
+
+
+=== Usage
+
+  client = OpenAmplify::Client.new
+
+  text = "After getting the MX1000 laser mouse and the Z-5500 speakers i fell in love with logitech"
+  analysis = client.amplify_this(text)
+  puts analysis  # default as xml
+
+In case you need a different format, OpenAmplify supports XML, JSON, RDF, CSV.
+It can also return the result as a fancy HTML page.
+
+  # assuming you use Nokogiri
+  doc = Nokogiri::XML(analysis.to_xml)
+
+  # or you want a JSON
+  json = JSON.parse(analysis.to_json)
+
+  # you should really try the pretty formats
+  puts analysis.to_pretty
+  # or
+  puts analysis.to_signals
+
+
+
+
 === Show the result from OpenAmplify as a Hash
 
   require 'openamplify'

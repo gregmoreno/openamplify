@@ -35,6 +35,23 @@ describe OpenAmplify::Analysis do
     result.client.must_equal @api
   end
 
+  it "should accept option from client" do
+    options = {
+      :analysis      => :topics,
+      :output_format => :json,
+      :scoring       => :standard,
+    }
+
+    api      = OpenAmplify::Client.new(options)
+    result = api.amplify_this(:input_text    => 'sample text')
+
+    options.each do |key, value|
+      result.send(key).must_equal options[key]
+    end
+  end
+
+
+
   it 'should call the service' do
     result = @api.amplify_this(:input_text => 'sample text')
     ap result.call
