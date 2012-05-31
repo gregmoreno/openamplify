@@ -9,7 +9,7 @@ module OpenAmplify
       attr_accessor *Analysis::Configuration::VALID_INPUT_KEYS
 
       attr_accessor :options, :client
-      attr_reader   :analysis
+      attr_reader   :result
 
       def initialize(client, options)
         self.client  = client
@@ -24,12 +24,23 @@ module OpenAmplify
         end
       end
 
+      def empty?
+        result.empty?
+      end
+
       def to_s
-        call
+        "#{result}"
+      end
+      alias_method :to_str, :to_s
+
+      private
+
+      def result
+        @result ||= call
       end
 
       def call
-        self.analysis = self.client.request_analysis(request_analysis_options)
+        @result = client.request_analysis(request_analysis_options)
       end
 
       def request_analysis_options

@@ -15,7 +15,11 @@ module OpenAmplify
       @connection ||= Faraday.new(default_options) do |builder|
         builder.use OpenAmplify::Response::RaiseClientError
         builder.use OpenAmplify::Response::RaiseServerError
-        builder.adapter(http_adapter)
+
+        # TODO: Make logging optional
+        # builder.response :logger
+
+        builder.adapter  http_adapter
       end
     end
 

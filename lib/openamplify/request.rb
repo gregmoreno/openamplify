@@ -12,19 +12,6 @@ module OpenAmplify
       request(:post, path, params, options)
     end
 
-    #def get(path, params={})
-    #  uri       = URI.parse path
-    #  uri.query = URI.encode_www_form(params)
-    #  response  = Net::HTTP.get_response uri
-    #  response.body
-    #end
-
-    #def post(path, params={})
-    #  uri      = URI.parse path
-    #  response = Net::HTTP.post_form uri, params
-    #  response.body
-    #end
-
     private
 
     def request(method, path, params, options)

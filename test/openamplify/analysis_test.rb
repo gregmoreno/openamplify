@@ -1,13 +1,38 @@
 require 'helper'
 
 describe OpenAmplify::Analysis do
+
   before do
     @api = OpenAmplify::Client.new
   end
 
-  it 'should output' do
-    result = @api.amplify_this(:input_text => 'this is a test', :http_method => :post)
-    result.to_s
+  it 'can return result as string' do
+    result = @api.amplify_this(amplify_params)
+    result.wont_be_nil
+  end
+
+  describe 'result as xml' do
+    it 'can via client' do
+      result = @api.amplify_this(amplify_params.merge(:output_format => :xml))
+
+      require 'nokogiri'
+      Nokogiri::XML(result).wont_be_nil
+    end
+
+    # TODO:
+    # it 'can via method call' do
+    #   result = @api.amplify_this(:input_text = @input_text)
+    #   result.to_xml.wont_be_nil
+    # end
+  end
+
+  describe 'result as json' do
+    it 'can via client' do
+      result = @api.amplify_this(amplify_params.merge(:output_format => :json))
+
+      require 'json'
+      JSON.parse(result).wont_be_nil
+    end
   end
 
   it 'should have default values' do
@@ -42,11 +67,11 @@ describe OpenAmplify::Analysis do
     options = {
       :analysis      => :topics,
       :output_format => :json,
-      :scoring       => :standard,
+      :scoring       => :fans,
     }
 
-    api    = OpenAmplify::Client.new(options)
-    result = api.amplify_this(:input_text    => 'sample text')
+    api = OpenAmplify::Client.new(options)
+    result = api.amplify_this(:input_text => 'sample text')
 
     options.each do |key, value|
       result.send(key).must_equal options[key]

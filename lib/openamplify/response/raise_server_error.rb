@@ -13,8 +13,6 @@ module OpenAmplify
         case status
         when 503
           raise OpenAmplify::Error::ServiceUnavailable.new "503 No server is available to handle this request.", headers
-        else
-          raise OpenAmplify::Error.new "#{status}: Unsupported error. #{body}", headers
         end
       end
 
