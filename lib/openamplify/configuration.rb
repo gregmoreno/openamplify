@@ -4,11 +4,11 @@ require 'openamplify/version'
 module OpenAmplify
   # Defines constants and methods for configuring a client
   module Configuration
-    VALID_OPTIONS_KEYS = [:consumer_key, :endpoint, :user_agent, :http_method].freeze
+    VALID_OPTIONS_KEYS = [:api_key, :endpoint, :user_agent, :http_method].freeze
 
-    DEFAULT_CONSUMER_KEY  = nil
-    DEFAULT_ENDPOINT      = '/http://portaltnx20.openamplify.com/AmplifyWeb_v20/AmplifyThis'
-    DEFAULT_HTTP_METHOD   = :post
+    DEFAULT_API_KEY     = nil
+    DEFAULT_ENDPOINT    = 'http://portaltnx20.openamplify.com/AmplifyWeb_v21/AmplifyThis'
+    DEFAULT_HTTP_METHOD = :get
 
     # The user agent that will be sent to the API endpoint if none is set
     DEFAULT_USER_AGENT = "OpenAmplify Ruby Gem #{OpenAmplify::VERSION}".freeze
@@ -29,10 +29,10 @@ module OpenAmplify
     end
 
     def reset
-      self.consumer_key = DEFAULT_CONSUMER_KEY
-      self.endpoint     = DEFAULT_ENDPOINT
-      self.http_method  = DEFAULT_HTTP_METHOD
-      self.user_agent   = DEFAULT_USER_AGENT
+      self.api_key     = DEFAULT_API_KEY
+      self.endpoint    = DEFAULT_ENDPOINT
+      self.http_method = DEFAULT_HTTP_METHOD
+      self.user_agent  = DEFAULT_USER_AGENT
     end
 
   end # Configuration

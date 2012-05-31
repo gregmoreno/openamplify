@@ -3,7 +3,6 @@ require 'helper'
 require 'awesome_print'
 
 describe OpenAmplify::Analysis do
-
   before do
     @api = OpenAmplify::Client.new
   end
@@ -34,6 +33,11 @@ describe OpenAmplify::Analysis do
   it 'should point the client' do
     result = @api.amplify_this({})
     result.client.must_equal @api
+  end
+
+  it 'should call the service' do
+    result = @api.amplify_this(:input_text => 'sample text')
+    ap result.call
   end
 
 

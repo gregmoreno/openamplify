@@ -7,10 +7,10 @@ module OpenAmplify
     class Context
       attr_accessor *Analysis::Configuration::VALID_OPTIONS_KEYS
       attr_accessor :options, :client
+      attr_reader   :analysis
 
       def initialize(client, options)
         self.client  = client
-        self.options = options
 
         merged_options = Analysis::Configuration.options.merge(options)
         Analysis::Configuration::VALID_OPTIONS_KEYS.each do |key|
@@ -18,8 +18,17 @@ module OpenAmplify
         end
       end
 
-    end
+      def call
+        self.analysis = self.client.request_analysis(request_analysis_options)
+      end
 
-  end
+      def request_analysis_options
+        Hash[* Analysis::Configuration::VALID_OPTIONS_KEYS.map { |key| [key, send(key) ]}.flatten ]
+        # TODO: Add rules here? like mutex source_url:input_text
+      end
+
+    end # Context
+
+  end # Analysis
 
 end

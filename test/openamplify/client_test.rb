@@ -25,11 +25,10 @@ describe OpenAmplify::Client do
       end
     end
 
-
     describe 'with class configuration' do
       before do
         @config = {
-          :consumer_key => 'ck',
+          :api_key      => 'ak',
           :endpoint     => 'ep',
           :user_agent   => 'ua',
           :http_method  => 'hm'
@@ -59,6 +58,5 @@ describe OpenAmplify::Client do
     end
 
   end
-
 
 end
