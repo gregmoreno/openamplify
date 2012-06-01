@@ -31,7 +31,7 @@ describe OpenAmplify::Configuration do
 
   describe '.http_method' do
     it 'should return the default http method' do
-      OpenAmplify.http_method.must_equal OpenAmplify::Configuration::DEFAULT_HTTP_METHOD
+      OpenAmplify.method.must_equal OpenAmplify::Configuration::DEFAULT_HTTP_METHOD
     end
   end
 

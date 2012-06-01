@@ -35,7 +35,7 @@ module OpenAmplify
     def request_analysis(options)
       params = prepare_request_params(options)
 
-      case self.http_method
+      case self.method
       when :post
         post(self.endpoint, params)
       else

@@ -19,7 +19,7 @@ module OpenAmplify
         # TODO: Make logging optional
         # builder.response :logger
 
-        builder.adapter  http_adapter
+        builder.adapter adapter
       end
     end
 

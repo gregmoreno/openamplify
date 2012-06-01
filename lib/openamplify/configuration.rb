@@ -5,7 +5,7 @@ require 'openamplify/version'
 module OpenAmplify
   # Defines constants and methods for configuring a client
   module Configuration
-    VALID_CONNECTION_KEYS = [:endpoint, :user_agent, :http_method, :http_adapter].freeze
+    VALID_CONNECTION_KEYS = [:endpoint, :user_agent, :method, :adapter].freeze
     VALID_OPTIONS_KEYS    = [:api_key, :analysis, :output_format, :scoring].freeze
 
     VALID_CONFIG_KEYS     = VALID_CONNECTION_KEYS + VALID_OPTIONS_KEYS
@@ -39,8 +39,8 @@ module OpenAmplify
 
     def reset
       self.endpoint      = DEFAULT_ENDPOINT
-      self.http_method   = DEFAULT_HTTP_METHOD
-      self.http_adapter  = DEFAULT_HTTP_ADAPTER
+      self.method        = DEFAULT_HTTP_METHOD
+      self.adapter       = DEFAULT_HTTP_ADAPTER
       self.user_agent    = DEFAULT_USER_AGENT
 
       self.api_key       = DEFAULT_API_KEY

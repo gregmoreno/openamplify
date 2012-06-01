@@ -35,8 +35,8 @@ describe OpenAmplify::Client do
           :scoring       => 'sc',
           :endpoint      => 'ep',
           :user_agent    => 'ua',
-          :http_method   => 'hm',
-          :http_adapter  => 'ha',
+          :method        => 'hm',
+          :adapter       => 'ha',
         }
       end
 
